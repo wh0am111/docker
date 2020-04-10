@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+  rabbitmq:
+    image: containous/whoami
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.frontend.rule=Host:whoami.newproject.com
+        - traefik.enable=true
+        - traefik.port=80
+        - traefik.tags=traefik-public
+        - traefik.docker.network=traefik-public
+        - traefik.backend.loadbalancer.swarm=true
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true

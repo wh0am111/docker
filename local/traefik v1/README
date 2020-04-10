@@ -1,0 +1,13 @@
+traefik 1.7 在3节点docker swarm的manager中部署
+
+# 创建config
+docker config create traefik.toml traefik.toml
+
+# 为traefik服务的tls创建secret
+docker secret create traefik.newproject.com.key ./ssl/traefik.newproject.com.key
+docker secret create traefik.newproject.com.crt ./ssl/traefik.newproject.com.pem
+# 为通过traefik代理的其他docker swarm 服务的tls创建secret
+docker secret create whomai.newproject.com.key ./ssl/whomai.newproject.com.key
+docker secret create whomai.newproject.com.crt ./ssl/whomai.newproject.com.pem
+# 部署traefik
+docker stack deploy -c docker-compose.yml reverse_proxy

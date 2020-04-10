@@ -1,0 +1,62 @@
+version: "3.7"
+services:
+  traefik:
+    image: traefik:v1.7-alpine
+    ports:
+      - 80:80
+      - 443:443
+    deploy:
+      labels:
+        - traefik.frontend.rule=Host:traefik.newproject.com
+        - traefik.enable=true
+        - traefik.port=8080
+        - traefik.tags=traefik-public
+        - traefik.docker.network=traefik-public
+        - traefik.webservice.frontend.entryPoints=https
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+    configs:
+      - source: traefik.toml
+        target: /etc/traefik/traefik.toml
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    secrets:
+      - source: traefik.newproject.com.crt
+        target: /ssl/traefik.newproject.com.crt
+      - source: traefik.newproject.com.key
+        target: /ssl/traefik.newproject.com.key
+      - source: whoami.newproject.com.crt
+        target: /ssl/whoami.newproject.com.crt
+      - source: whoami.newproject.com.key
+        target: /ssl/whoami.newproject.com.key
+    networks:
+      - traefik-public
+# --docker.exposedbydefault=false，--constraints=tag==traefik-public，前面一个只暴露有标签的服务，后面一个可以用来只暴露有这个标签的服务给对应的traefik实例，对部署多个traefik有帮助
+    command: >
+      --docker
+      --docker.swarmMode
+      --docker.watch
+      --docker.exposedbydefault=false
+      --constraints=tag==traefik-public
+      --accessLog
+      --api
+
+networks:
+  traefik-public:
+    external: true
+		
+configs:
+  traefik.toml:
+    external: true
+
+secrets:
+  traefik.newproject.com.crt:
+    external: true
+  traefik.newproject.com.key:
+    external: true
+  whoami.newproject.com.crt:
+    external: true
+  whoami.newproject.com.key:
+    external: true
