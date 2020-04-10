@@ -1,0 +1,14 @@
+[tls]
+  [[tls.certificates]]
+    certFile = "/data/ssl/whoami.newproject.com.pem"
+    keyFile = "/data/ssl/whoami.newproject.com.key"
+
+  [[tls.certificates]]
+    certFile = "/data/ssl/traefik.newproject.com.pem"
+    keyFile = "/data/ssl/traefik.newproject.com.key"
+
+[tls.stores]
+  [tls.stores.default]
+    [tls.stores.default.defaultCertificate]
+      certFile = "/data/ssl/traefik.newproject.com.pem"
+      keyFile = "/data/ssl/traefik.newproject.com.key"

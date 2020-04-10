@@ -1,0 +1,31 @@
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+
+  [entryPoints.web-secure]
+    address = ":443"
+
+  [entryPoints.traefik]
+    address = ":8080"
+
+[providers]
+  [providers.docker]
+    swarmMode = true
+    exposedByDefault = false 
+    network = "traefik-public"
+  [providers.file]
+    filename = "dynamic_conf.toml"
+    watch = true
+
+[retry]
+
+[api]
+  dashboard = true
+  insecure = true
+  debug = true
+
+[ping]
+
+[http.middlewares]
+  [http.middlewares.https-redirect.redirectScheme]
+    scheme = "https"

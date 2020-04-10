@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+
+  nginx:
+    image: nginx:latest
+    networks:
+      - newproject
+      - traefik-public
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.nginx.rule=Host(`nginx.newproject.com`)"
+        - "traefik.http.routers.nginx.entrypoints=web"
+        - "traefik.http.services.nginx.loadbalancer.server.port=80"
+        -  "traefik.docker.network=traefik-public"
+    labels:
+      - aliyun.logs.app=stdout
+
+  whoami:
+    image: "containous/whoami"
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.whoami.rule=Host(`whoami.newproject.com`)"
+        - "traefik.http.routers.whoami.entrypoints=web-secure"
+        - "traefik.http.routers.whoami.tls=true"
+        - "traefik.http.services.whoami.loadbalancer.server.port=80"
+        - "traefik.docker.network=traefik-public"
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
