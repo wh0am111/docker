@@ -1,13 +1,13 @@
 logLevel = "DEBUG"
 
-defaultEntryPoints = ["http", "https"]
+#defaultEntryPoints = ["http", "https"]
 
 # http请求都重定向到https
 [entryPoints]
   [entryPoints.http]
     address = ":80"
-    [entryPoints.http.redirect]
-      entryPoint = "https"
+#    [entryPoints.http.redirect]
+#      entryPoint = "https"
   [entryPoints.https]
     address = ":443"
 

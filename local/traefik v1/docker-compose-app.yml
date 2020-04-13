@@ -3,11 +3,10 @@ services:
   app:
     image: containous/whoami
     deploy:
-      placement:
-        constraints:
-          - node.role == manager
+      replicas: 3
       labels:
         - traefik.frontend.rule=Host:whoami.newproject.com
+        - traefik.frontend.entryPoints=http,https
         - traefik.enable=true
         - traefik.port=80
         - traefik.tags=traefik-public
