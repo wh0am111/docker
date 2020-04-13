@@ -13,8 +13,8 @@ logLevel = "DEBUG"
 
   [entryPoints.https.tls]
     [[entryPoints.https.tls.certificates]]
-      certFile = "/ssl/traefik.com.crt"
-      keyFile = "/ssl/traefik.com.key"
+      certFile = "/ssl/traefik.newproject.com.crt"
+      keyFile = "/ssl/traefik.newproject.com.key"
     [[entryPoints.https.tls.certificates]]
-      certFile = "/ssl/portainer.com.crt"
-      keyFile = "/ssl/portainer.com.key"
+      certFile = "/ssl/whoami.newproject.com.crt"
+      keyFile = "/ssl/whoami.newproject.com.key"
