@@ -5,21 +5,26 @@ services:
     image: "traefik:latest"
     deploy:
       replicas: 3
+      # placement:
+        # constraints: [node.role == manager]
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.traefik.rule=Host(`traefik.newproject.com`)"
-        - "traefik.http.routers.traefik.entrypoints=web-secure"
+        - "traefik.http.routers.traefik.entrypoints=web"
+        - "traefik.http.routers.traefik-secure.rule=Host(`traefik.newproject.com`)"
+        - "traefik.http.routers.traefik-secure.entrypoints=web-secure"
+        - "traefik.http.routers.traefik-secure.tls=true"
         - "traefik.http.services.traefik.loadbalancer.server.port=8080"
-        - "traefik.http.routers.traefik.tls=true"
         - "traefik.docker.network=traefik-public"
+      # # http认证，user:passwod
         # - "traefik.http.routers.traefik.middlewares=auth"
         # - "traefik.http.middlewares.auth.basicauth.users=user:$$apr1$$q8eZFHjF$$Fvmkk//V6Btlaf2i/ju5n/"
-      # global redirect to https
-        - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
-        - "traefik.http.routers.http-catchall.entrypoints=web"
-        - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
-      # middleware redirect
-        - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      # # global redirect to https
+        # - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
+        # - "traefik.http.routers.http-catchall.entrypoints=web"
+        # - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
+      # # middleware redirect
+        # - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
     networks:
       - traefik-public
     ports:

@@ -3,5 +3,5 @@ traefik 2 在3节点docker swarm的各节点中部署
 # 部署traefik
 docker stack deploy -c docker-compose.yml reverse_proxy
 
-# 部署应用，两个应用中，一个的entryPoints使用web，一个的entryPoints使用web-secure
+# 部署app
 docker stack deploy -c docker-compose-app.yml app
