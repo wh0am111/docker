@@ -13,10 +13,11 @@ services:
         - traefik.tags=traefik-public
         - traefik.docker.network=traefik-public
         - traefik.webservice.frontend.entryPoints=https
-      replicas: 1
-      placement:
-        constraints:
-          - node.role == manager
+# 启用后端粘滞session
+        - traefik.backend.loadbalancer.sticky=true
+# # 使用 Swarm 内置的负载均衡器（只有使用Swarm Mode时生效）,traefik to call the backend service (by a virtual ip) via the swarm mesh routing network, resulting a single backend record in the dashboard
+        # - traefik.backend.loadbalancer.swarm=true
+      replicas: 3
     configs:
       - source: traefik.toml
         target: /etc/traefik/traefik.toml

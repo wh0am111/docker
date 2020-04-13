@@ -2,6 +2,7 @@ logLevel = "DEBUG"
 
 defaultEntryPoints = ["http", "https"]
 
+# http请求都重定向到https
 [entryPoints]
   [entryPoints.http]
     address = ":80"
@@ -12,5 +13,8 @@ defaultEntryPoints = ["http", "https"]
 
   [entryPoints.https.tls]
     [[entryPoints.https.tls.certificates]]
-      certFile = "/ssl/traefik.newproject.com.crt"
-      keyFile = "/ssl/traefik.newproject.com.key"
+      certFile = "/ssl/traefik.com.crt"
+      keyFile = "/ssl/traefik.com.key"
+    [[entryPoints.https.tls.certificates]]
+      certFile = "/ssl/portainer.com.crt"
+      keyFile = "/ssl/portainer.com.key"

@@ -1,6 +1,6 @@
 version: "3.7"
 services:
-  rabbitmq:
+  app:
     image: containous/whoami
     deploy:
       placement:
@@ -12,7 +12,10 @@ services:
         - traefik.port=80
         - traefik.tags=traefik-public
         - traefik.docker.network=traefik-public
-        - traefik.backend.loadbalancer.swarm=true
+# 启用后端粘滞session
+        - traefik.backend.loadbalancer.sticky=true
+# # 使用 Swarm 内置的负载均衡器（只有使用Swarm Mode时生效）,traefik to call the backend service (by a virtual ip) via the swarm mesh routing network, resulting a single backend record in the dashboard
+        # - traefik.backend.loadbalancer.swarm=true
     networks:
       - traefik-public
 
