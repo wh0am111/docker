@@ -5,7 +5,6 @@ services:
   nginx:
     image: nginx:latest
     networks:
-      - newproject
       - traefik-public
     deploy:
       labels:
