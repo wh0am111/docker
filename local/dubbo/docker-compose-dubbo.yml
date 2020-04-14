@@ -1,0 +1,24 @@
+version: '3.7'
+services:
+  dubbo-admin:
+    image: chenchuxin/dubbo-admin:latest
+    networks:
+      - newproject
+      - traefik-public
+    environment:
+      - dubbo.registry.address=zookeeper://zk1:2181?backup=zk2:2181,zk3:2181
+      - dubbo.admin.root.password=root
+      - dubbo.admin.guest.password=guest
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.dubbo-admin.rule=Host(`dubbo.newproject.com`)"
+        - "traefik.http.routers.dubbo-admin.entrypoints=web"
+        - "traefik.http.services.dubbo-admin.loadbalancer.server.port=8080"
+        -  "traefik.docker.network=traefik-public"
+
+networks:
+  traefik-public:
+    external: true
+  newproject:
+    external: true
