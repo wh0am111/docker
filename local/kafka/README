@@ -1,0 +1,14 @@
+# Create Topic test
+    --zookeeper zk1:2181 \
+    --create \
+    --replication-factor 1 \
+    --partitions 1 \
+    --topic test
+
+# Produce messages
+kafka-console-producer.sh \
+    --broker-list 192.168.0.65:9094 \
+    --topic test
+
+# Consume messages
+kafka-console-consumer.sh --bootstrap-server 192.168.0.65:9094 --topic test --from-beginning
