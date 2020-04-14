@@ -1,0 +1,41 @@
+version: "3.7"
+
+configs:
+  haproxy_cfg:
+    file: ./haproxy.cfg
+
+services:
+  haproxy:
+    image: haproxy
+    networks:
+      - traefik-public
+      - newproject
+#    ports:
+#      - 15672:15672
+#      - 5672:5672
+#      - 1936:1936
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+    configs:
+      - source: haproxy_cfg
+        uid: '999'
+        gid: '999'
+        target: /usr/local/etc/haproxy/haproxy.cfg
+    deploy:
+      placement:
+        constraints: [node.role==manager]
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.haproxy-rabbitmq.rule=Host(`haproxy-rabbitmq.newproject.com`)"
+        - "traefik.http.routers.haproxy-rabbitmq.entrypoints=web"
+        - "traefik.http.services.haproxy-rabbitmq.loadbalancer.server.port=15672"
+        - "traefik.docker.network=traefik-public"
+
+        
+networks:
+  traefik-public:
+    external: true
+  newproject:
+    external: true
+
+
