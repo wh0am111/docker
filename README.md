@@ -1,4 +1,4 @@
-## 记录3节点的docker swarm集群中使用docker stack部署各种服务的配置文件
+### 记录3节点的docker swarm集群中使用docker stack部署各种服务的配置文件
 
 
 ### 环境
@@ -26,7 +26,7 @@ docker network create -d overlay newproject
 
 ### 部署Traefik V2
 ```bash
-docker stack deploy -c ./traefik/docker-compose-traefik.yml reverse_proxy
+docker stack deploy -c ./traefik\ v2/docker-compose-traefik.yml reverse_proxy
 ```
 
 ### 部署docker swarm集群的web管理工具portainer
