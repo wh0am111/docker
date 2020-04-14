@@ -15,20 +15,29 @@ local记录3节点的docker swarm中使用docker stack部署各种服务配置�
 
 
 ## 创建代理工具Treafik V2的在swarm中的网络
-```bashdocker network create -d overlay --attachable traefik-public```
+```bash
+docker network create -d overlay --attachable traefik-public
+```
 ## 创建新项目在swarm中的网络
-```bashdocker network create -d overlay newproject```
+```bash
+docker network create -d overlay newproject
+```
 
 
 ## 部署Traefik V2
-```bashdocker stack deploy -c ./traefik/docker-compose-traefik.yml reverse_proxy`
+```bash
+docker stack deploy -c ./traefik/docker-compose-traefik.yml reverse_proxy
+```
 
 ## 部署docker swarm集群的web管理工具portainer
 
-```bashdocker stack deploy -c ./portainer/docker-compose-portainer-agent.yml tool`
+```bash
+docker stack deploy -c ./portainer/docker-compose-portainer-agent.yml tool
+```
 
 ## 部署新项目所需的所有服务，redis，mongo，mysql，rabbitmq,zookeeper,dubbo-admin,kafka
-```bashdocker stack deploy -c ./redis/docker-compose-redis.yml newproject_db
+```bash
+docker stack deploy -c ./redis/docker-compose-redis.yml newproject_db
 docker stack deploy -c ./mongo/docker-compose-mongo.yml newproject_db
 docker stack deploy -c ./mysql/docker-compose-mysql.yml newproject_db
 docker stack deploy -c ./rabbitmq/docker-compose-rabbitmq.yml newproject_queue
@@ -36,8 +45,11 @@ docker stack deploy -c ./haproxy/docker-compose-haproxy.yml newproject_queue
 
 docker stack deploy -c ./zookeeper/docker-compose-zookeeper.yml newproject_service
 docker stack deploy -c ./dubbo/docker-compose-dubbo.yml newproject_service
-docker stack deploy -c ./kafka/docker-compose-kafka.yml newproject_service```
+docker stack deploy -c ./kafka/docker-compose-kafka.yml newproject_service
+```
 
 # 部署docker swarm集群的日志收集以及状态监控系统
-```bashdocker stack deploy -c ./swarmprom/docker-compose-traefik-v2-http.yml monitor
-docker stack deploy -c ./elk/docker-compose-elk.yml log```
+```bash
+docker stack deploy -c ./swarmprom/docker-compose-traefik-v2-http.yml monitor
+docker stack deploy -c ./elk/docker-compose-elk.yml log
+```
