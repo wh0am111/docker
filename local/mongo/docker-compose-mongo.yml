@@ -1,0 +1,25 @@
+version: '3.7'
+services:
+  mongo:
+    image: mongo:3.4.10
+    command: --auth
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+    networks:
+      - newproject
+    # ports:
+      # - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    deploy:
+      placement:
+        constraints: [node.role==manager]
+
+
+volumes:
+ mongodb_data:
+
+networks:
+  newproject:
+    external: true

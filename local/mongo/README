@@ -1,0 +1,20 @@
+添加用户
+
+use ds
+
+db.createUser(
+  {
+    user: "test",
+    pwd: "123456",
+    roles: [ { role: "dbOwner", db: "ds" } ]
+  }
+)
+
+
+db.auth('test','123456')
+
+db.test.insert({'x':1})
+
+exit
+
+
