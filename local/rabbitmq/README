@@ -1,0 +1,40 @@
+
+进入rabbitmq容器搭建磁盘节点，启用集群服务
+
+rabbit2
+# rabbitmqctl stop_app
+Stopping rabbit application on rabbit rabbit@rabbit2
+# rabbitmqctl join_cluster rabbit@rabbit1
+Clustering rabbit rabbit@rabbit2 with rabbit@rabbit1
+# rabbitmqctl start_app
+Starting rabbit rabbit@rabbit2
+
+rabbit3
+# rabbitmqctl stop_app
+Stopping rabbit application on rabbit rabbit@rabbit3
+# rabbitmqctl join_cluster rabbit@rabbit1
+Clustering rabbit rabbit@rabbit3 with rabbit@rabbit1
+# rabbitmqctl start_app
+Starting rabbit rabbit@rabbit3
+
+查看集群状态
+# rabbitmqctl cluster_status
+Cluster status of rabbit rabbit@rabbit2
+[{rabbits,[{disc,[rabbit@rabbit1,rabbit@rabbit2,rabbit@rabbit3]}]},
+ {running_rabbits,[rabbit@rabbit1,rabbit@rabbit3,rabbit@rabbit2]},
+ {cluster_name,<<"rabbit@rabbit1">>},
+ {partitions,[]},
+ {alarms,[{rabbit@rabbit1,[]},{rabbit@rabbit3,[]},{rabbit@rabbit2,[]}]}]
+
+使用rabbitmq的镜像队列实现高可用
+
+将需要消费的队列变为镜像队列，存在于多个节点，这样就可以实现RabbitMQ的HA高可用性。作用就是消息实体会主动在镜像节点之间实现同步，而不是像普通模式那样，在consumer消费数据时临时读取。缺点就是，集群内部的同步通讯会占用大量的网络带宽
+此配置已写入definitions.json中
+
+
+修改节点为内存节点，节点类型有两种，分别为磁盘节点(disc)和内存节点(ram)，默认为磁盘节点
+# rabbitmqctl stop_app
+
+# rabbitmqctl change_cluster_node_type ram
+
+# rabbitmqctl start_app

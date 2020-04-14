@@ -1,0 +1,88 @@
+version: "3.7"
+
+services:
+  rabbit1:
+    image: rabbitmq:3.7.8-management
+    hostname: rabbit1
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "secret string"
+    volumes:
+      - "rabbimq_data:/var/lib/rabbitmq"
+      - "/etc/localtime:/etc/localtime:ro"
+    configs:
+      - source: rabbitmq_config
+        uid: '999'
+        gid: '999'
+        target: /etc/rabbitmq/rabbitmq.config
+      - source: definitions_json
+        uid: '999'
+        gid: '999'
+        target: /etc/rabbitmq/definitions.json
+    networks:
+      - newproject
+    deploy:
+      placement:
+        constraints: [node.labels.rabbitmq01==true]
+
+  rabbit2:
+    image: rabbitmq:3.7.8-management
+    hostname: rabbit2
+    depends_on:
+      - rabbit1
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "secret string"
+    volumes:
+      - "rabbimq_data:/var/lib/rabbitmq"
+      - "/etc/localtime:/etc/localtime:ro"
+    configs:
+      - source: rabbitmq_config
+        uid: '999'
+        gid: '999'
+        target: /etc/rabbitmq/rabbitmq.config
+      - source: definitions_json
+        uid: '999'
+        gid: '999'
+        target: /etc/rabbitmq/definitions.json
+    networks:
+      - newproject
+    deploy:
+      placement:
+        constraints: [node.labels.rabbitmq02==true]
+    
+  rabbit3:
+    image: rabbitmq:3.7.8-management
+    hostname: rabbit3
+    depends_on:
+      - rabbit1
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "secret string"
+    volumes:
+      - "rabbimq_data:/var/lib/rabbitmq"
+      - "/etc/localtime:/etc/localtime:ro"
+    configs:
+      - source: rabbitmq_config
+        uid: '999'
+        gid: '999'
+        target: /etc/rabbitmq/rabbitmq.config
+      - source: definitions_json
+        uid: '999'
+        gid: '999'
+        target: /etc/rabbitmq/definitions.json
+    networks:
+      - newproject
+    deploy:
+      placement:
+        constraints: [node.labels.rabbitmq03==true]
+      
+networks:
+  newproject:
+    external: true
+
+volumes:
+  rabbimq_data:
+
+configs:
+  rabbitmq_config:
+    file: ./rabbitmq.config
+  definitions_json:
+    file: ./definitions.json
