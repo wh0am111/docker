@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+  redis:
+    image: redis:3.2
+    command: redis-server /usr/local/etc/redis/redis.conf --appendonly yes
+#    ports:
+#      - "6379:6379"
+    configs:
+      - source: redis_config
+        target: /usr/local/etc/redis/redis.conf
+    volumes:
+      - redis_data:/data
+    networks:
+      - newproject
+
+
+configs:
+  redis_config:
+    file: ./redis.conf
+
+volumes:
+  redis_data:
+
+networks:
+  newproject:
+    external: true
