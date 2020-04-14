@@ -7,6 +7,10 @@
     certFile = "/data/ssl/traefik.newproject.com.pem"
     keyFile = "/data/ssl/traefik.newproject.com.key"
 
+  [[tls.certificates]]
+    certFile = "/data/ssl/portainer.newproject.com.pem"
+    keyFile = "/data/ssl/portainer.newproject.com.key"
+
 [tls.stores]
   [tls.stores.default]
     [tls.stores.default.defaultCertificate]
