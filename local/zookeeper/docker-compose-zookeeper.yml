@@ -1,0 +1,65 @@
+version: "3.7"
+services:
+  zk1:
+    image: zookeeper:3.4.11
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "4"
+    ports:
+      - 2181:2181
+    networks:
+      - newproject
+    deploy:
+      placement:
+        constraints: [node.labels.zookeeper1==true]
+      restart_policy:
+        condition: on-failure
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=zk2:2888:3888 server.3=zk3:2888:3888
+
+  zk2:
+    image: zookeeper:3.4.11
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "4"
+    ports:
+      - 2182:2181
+    networks:
+      - newproject
+    deploy:
+      placement:
+        constraints: [node.labels.zookeeper2==true]
+      restart_policy:
+        condition: on-failure
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zk1:2888:3888 server.2=0.0.0.0:2888:3888 server.3=zk3:2888:3888
+
+  zk3:
+    image: zookeeper:3.4.11
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "4"
+    ports:
+      - 2183:2181
+    networks:
+      - newproject
+    deploy:
+      placement:
+        constraints: [node.labels.zookeeper3==true]
+      restart_policy:
+        condition: on-failure
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zk1:2888:3888 server.2=zk2:2888:3888 server.3=0.0.0.0:2888:3888
+
+networks:
+  newproject:
+    external: true
