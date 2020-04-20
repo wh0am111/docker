@@ -50,6 +50,6 @@ docker stack deploy -c ./kafka/docker-compose-kafka.yml newproject_service
 
 ### 部署docker swarm集群的日志收集以及状态监控系统
 ```bash
-docker stack deploy -c ./swarmprom/docker-compose-traefik-v2-http.yml monitor
-docker stack deploy -c ./elk/docker-compose-elk.yml log
+docker stack deploy -c ./swarmprom/docker-compose-traefik-v2-http.yml newproject_monitor
+docker stack deploy -c ./elk/docker-compose-elk.yml newproject_log
 ```
